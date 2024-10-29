@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="large_padding">16dp</dimen>
+    <dimen name="large_spacer">20dp</dimen>
+    <dimen name="large_object">100dp</dimen>
+</resources>
