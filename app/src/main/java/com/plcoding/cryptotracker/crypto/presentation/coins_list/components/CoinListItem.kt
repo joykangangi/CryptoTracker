@@ -1,10 +1,7 @@
 package com.plcoding.cryptotracker.crypto.presentation.coins_list.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRowScopeInstance.weight
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,12 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.plcoding.cryptotracker.R
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.sp
+import com.plcoding.cryptotracker.crypto.domain.Coin
+import com.plcoding.cryptotracker.crypto.presentation.mappers.CoinMappers.toCoinUI
 import com.plcoding.cryptotracker.crypto.presentation.models.CoinUI
 import com.plcoding.cryptotracker.crypto.presentation.models.DisplayableNumber
 import com.plcoding.cryptotracker.ui.theme.CryptoTrackerTheme
@@ -66,7 +64,10 @@ fun CoinListItem(
                         fullName = coinUI.name
                     )
 
-                    ItemStatsColum()
+                    ItemStatsColum(
+                        priceUSD = "$ ${coinUI.priceUSD.formatted}",
+                        priceChange = coinUI.changePercent24Hr
+                    )
 
                 }
             )
@@ -84,45 +85,64 @@ private fun ItemDetailColum(
         modifier = modifier,
         verticalArrangement = Arrangement.SpaceAround,
         content = {
-            Text(text = abbreviationName, style = MaterialTheme.typography.headlineMedium)
-            Text(text = fullName, style = MaterialTheme.typography.labelMedium)
+            Text(
+                text = abbreviationName,
+                style = MaterialTheme.typography.headlineMedium,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = fullName,
+                style = MaterialTheme.typography.labelMedium,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light
+            )
         }
     )
 }
 
 @Composable
 private fun ItemStatsColum(
+    priceUSD: String,
+    priceChange: DisplayableNumber,
     modifier: Modifier = Modifier
 ) {
 
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.End,
         content = {
-            Text(text = abbreviationName, style = MaterialTheme.typography.headlineMedium)
-            Text(text = fullName, style = MaterialTheme.typography.labelMedium)
+            Text(
+                text = priceUSD,
+                style = MaterialTheme.typography.headlineMedium,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            PriceChangeRow(priceChange = priceChange)
         }
     )
 
 }
 
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun PreviewCoinListItem() = CryptoTrackerTheme {
     CoinListItem(
-        coinUI = sampleCoinUI,
+        coinUI = previewCoinUI.toCoinUI(),
         onItemClick = {  }
     )
 }
 
-internal val previewCoinUI = CoinUI(
+internal val previewCoinUI = Coin(
     id = "1",
     rank = 2,
     name = "Bitcoin",
     symbol = "BTC",
-    marketCapUSD = DisplayableNumber(value = 0.0, "$0.0"),
-    changePercent24Hr = DisplayableNumber(value = 0.0, "$0.0"),
-    priceUSD = DisplayableNumber(value = 0.0, "$0.0"),
-    iconRes = R.drawable.btc
+    marketCapUSD =  0.0,
+    changePercent24Hr = 0.0,
+    priceUSD = 0.0,
 )

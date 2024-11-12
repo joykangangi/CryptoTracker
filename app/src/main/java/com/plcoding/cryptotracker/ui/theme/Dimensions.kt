@@ -43,4 +43,4 @@ fun mediumObject() = dimensionResource(id = R.dimen.large_object)
 
 @ReadOnlyComposable
 @Composable
-fun smallObject() = dimensionResource(id = R.dimen.large_object) / 2
+fun smallObject() = mediumObject() / 5
